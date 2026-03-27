@@ -1,17 +1,1364 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Oracle Fusion AI Agents → Microsoft Azure AI Equivalents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090f;
+  --surface: #0f1119;
+  --card: #141723;
+  --border: #1f2436;
+  --border-bright: #2a3150;
+  --text: #e4e8f5;
+  --muted: #7b85a8;
+  --dim: #4a5170;
+
+  --ms-blue: #0078d4;
+  --ms-blue-light: #2899f5;
+  --ms-blue-muted: #1a3a5c;
+  --foundry: #7b5ea7;
+  --foundry-light: #a882dd;
+  --foundry-muted: #2d1f45;
+  --fabric: #00897b;
+  --fabric-light: #26c6b8;
+  --fabric-muted: #003d38;
+  --copilot: #107c41;
+  --copilot-light: #21a55c;
+  --copilot-muted: #0a3020;
+
+  --erp: #c2410c;
+  --hcm: #7c3aed;
+  --scm: #0369a1;
+  --sales: #d97706;
+  --service: #0f766e;
+  --mktg: #be185d;
+  --health: #166534;
+
+  --oracle-red: #c74634;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #08090f 0%, #0f1225 40%, #141030 100%);
+  border-bottom: 1px solid var(--border-bright);
+  padding: 48px 40px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(0,120,212,.08) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 50% at 20% 80%, rgba(123,94,167,.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ms-blue-light);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.15;
+  max-width: 860px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--ms-blue-light);
+}
+.hero-sub {
+  color: var(--muted);
+  max-width: 800px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ── LEGEND / PILLS ── */
+.legend-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 18px 40px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.legend-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--dim);
+  margin-right: 4px;
+}
+.pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: opacity .15s;
+  letter-spacing: .3px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  border: none;
+  white-space: nowrap;
+}
+.pill:hover { opacity: .8; }
+.pill.active { outline: 2px solid #fff; outline-offset: 1px; }
+.pill-all  { background: #1f2436; color: var(--text); }
+.pill-erp  { background: var(--erp); color: #fff; }
+.pill-hcm  { background: var(--hcm); color: #fff; }
+.pill-scm  { background: var(--scm); color: #fff; }
+.pill-sales { background: var(--sales); color: #fff; }
+.pill-service { background: var(--service); color: #fff; }
+.pill-mktg { background: var(--mktg); color: #fff; }
+.pill-health { background: var(--health); color: #fff; }
+
+/* ── IQ STACK LEGEND ── */
+.stack-legend {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  padding: 12px 40px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.stack-item { display: flex; align-items: center; gap: 7px; font-size: 11.5px; }
+.stack-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.dot-foundry  { background: var(--foundry-light); }
+.dot-copilot  { background: var(--copilot-light); }
+.dot-fabric   { background: var(--fabric-light); }
+.stack-item span { color: var(--muted); }
+
+/* ── DOMAIN SECTIONS ── */
+.domain-block { margin-bottom: 0; }
+
+.domain-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 40px;
+  background: var(--surface);
+  border-top: 2px solid;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.domain-header.erp    { border-color: var(--erp); }
+.domain-header.hcm    { border-color: var(--hcm); }
+.domain-header.scm    { border-color: var(--scm); }
+.domain-header.sales  { border-color: var(--sales); }
+.domain-header.service { border-color: var(--service); }
+.domain-header.mktg   { border-color: var(--mktg); }
+.domain-header.health { border-color: var(--health); }
+
+.domain-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .3px;
+}
+.domain-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.erp .domain-badge  { background: rgba(194,65,12,.2); color: #f97316; }
+.hcm .domain-badge  { background: rgba(124,58,237,.2); color: #a78bfa; }
+.scm .domain-badge  { background: rgba(3,105,161,.2); color: #38bdf8; }
+.sales .domain-badge { background: rgba(217,119,6,.2); color: #fbbf24; }
+.service .domain-badge { background: rgba(15,118,110,.2); color: #34d399; }
+.mktg .domain-badge  { background: rgba(190,24,93,.2); color: #f472b6; }
+.health .domain-badge { background: rgba(22,101,52,.2); color: #4ade80; }
+
+.domain-1p-apps {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.domain-1p-apps strong { color: var(--oracle-red); font-weight: 500; }
+
+/* ── NARRATIVE STRIP ── */
+.narrative-strip {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.narrative-cell {
+  padding: 12px 16px;
+  font-size: 12px;
+  line-height: 1.55;
+  flex: 1;
+  border-right: 1px solid var(--border);
+}
+.narrative-cell:last-child { border-right: none; }
+.narrative-cell.n-foundry { background: var(--foundry-muted); border-top: 2px solid var(--foundry); }
+.narrative-cell.n-copilot { background: var(--copilot-muted); border-top: 2px solid var(--copilot); }
+.narrative-cell.n-fabric  { background: var(--fabric-muted);  border-top: 2px solid var(--fabric); }
+.narrative-cell .nc-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.narrative-cell.n-foundry .nc-label { color: var(--foundry-light); }
+.narrative-cell.n-copilot .nc-label { color: var(--copilot-light); }
+.narrative-cell.n-fabric  .nc-label { color: var(--fabric-light); }
+.narrative-cell p { color: var(--muted); font-weight: 300; font-size: 12px; }
+
+/* ── TABLE ── */
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+colgroup col:nth-child(1) { width: 120px; }
+colgroup col:nth-child(2) { width: 185px; }
+colgroup col:nth-child(3) { width: 190px; }
+colgroup col:nth-child(4) { width: 150px; }
+colgroup col:nth-child(5) { width: 190px; }
+colgroup col:nth-child(6) { width: 185px; }
+colgroup col:nth-child(7) { width: 195px; }
+
+thead tr {
+  background: #0b0d15;
+  border-bottom: 1px solid var(--border-bright);
+}
+thead th {
+  padding: 9px 14px;
+  text-align: left;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--dim);
+  font-weight: 600;
+  white-space: nowrap;
+}
+thead th.th-foundry { color: var(--foundry-light); }
+thead th.th-copilot { color: var(--copilot-light); }
+thead th.th-fabric  { color: var(--fabric-light); }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+tbody tr:hover { background: rgba(255,255,255,.025); }
+tbody tr:nth-child(even) { background: rgba(255,255,255,.012); }
+tbody tr:nth-child(even):hover { background: rgba(255,255,255,.03); }
+
+td {
+  padding: 9px 14px;
+  vertical-align: top;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+td.fa-col { color: var(--muted); font-size: 12px; }
+td.agent-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 12.5px;
+}
+td.benefit-col {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 300;
+}
+
+/* 1P app tags */
+.app-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin: 2px 2px 2px 0;
+  white-space: nowrap;
+}
+.tag-ps   { background: rgba(199,70,52,.15); color: #fb7c6a; border: 1px solid rgba(199,70,52,.25); }
+.tag-jde  { background: rgba(255,140,0,.12); color: #ffaa44; border: 1px solid rgba(255,140,0,.2); }
+.tag-ebis { background: rgba(199,70,52,.12); color: #e86e5a; border: 1px solid rgba(199,70,52,.2); }
+.tag-siebel { background: rgba(120,80,200,.15); color: #b09ae0; border: 1px solid rgba(120,80,200,.25); }
+.tag-cerner { background: rgba(22,101,52,.2); color: #4ade80; border: 1px solid rgba(22,101,52,.35); }
+.tag-azure { background: rgba(0,120,212,.12); color: var(--ms-blue-light); border: 1px solid rgba(0,120,212,.2); font-size: 9.5px; }
+
+/* IQ columns */
+td.col-foundry {
+  background: rgba(123,94,167,.05);
+  color: #c4aaee;
+  font-size: 12px;
+  font-weight: 300;
+}
+td.col-copilot {
+  background: rgba(16,124,65,.05);
+  color: #7dd9a8;
+  font-size: 12px;
+  font-weight: 300;
+}
+td.col-fabric {
+  background: rgba(0,137,123,.05);
+  color: #6dd5cc;
+  font-size: 12px;
+  font-weight: 300;
+}
+td.col-foundry strong { color: var(--foundry-light); font-weight: 600; }
+td.col-copilot strong { color: var(--copilot-light); font-weight: 600; }
+td.col-fabric  strong { color: var(--fabric-light);  font-weight: 600; }
+
+/* ── SUMMARY BOX ── */
+.summary {
+  margin: 0;
+  padding: 40px;
+  background: linear-gradient(135deg, #0a0c15 0%, #0e1020 100%);
+  border-top: 1px solid var(--border-bright);
+}
+.summary h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -.3px;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.summary-card {
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border-bright);
+}
+.summary-card.s-foundry { border-color: var(--foundry); background: var(--foundry-muted); }
+.summary-card.s-copilot { border-color: var(--copilot); background: var(--copilot-muted); }
+.summary-card.s-fabric  { border-color: var(--fabric);  background: var(--fabric-muted); }
+.summary-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.s-foundry h3 { color: var(--foundry-light); }
+.s-copilot h3 { color: var(--copilot-light); }
+.s-fabric  h3 { color: var(--fabric-light); }
+.summary-card ul {
+  list-style: none;
+  padding: 0;
+}
+.summary-card ul li {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 300;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  line-height: 1.5;
+}
+.summary-card ul li:last-child { border-bottom: none; }
+.summary-card ul li::before { content: '→ '; color: var(--border-bright); }
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  color: var(--dim);
+  border-top: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* hide/show */
+.domain-block.hidden { display: none; }
+</style>
 </head>
-
 <body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
-</body>
 
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Strategic Reference · Oracle 1P → Azure Migration · March 2026</div>
+  <h1>Oracle Fusion AI Agents &<br/><em>Microsoft Azure AI Equivalents</em><br/>for On-Premises Oracle 1P Applications</h1>
+  <p class="hero-sub">
+    A comprehensive mapping of Oracle Fusion Cloud's embedded AI agent catalog to their on-premises Oracle 1P counterparts
+    (PeopleSoft, JD Edwards, E-Business Suite, Siebel CRM, Oracle Health/Cerner) — and how customers who prefer to stay on
+    <strong style="color:var(--ms-blue-light)">Microsoft Azure</strong> can achieve equivalent or superior agentic intelligence using
+    <strong style="color:var(--foundry-light)">Azure AI Foundry</strong>,
+    <strong style="color:var(--copilot-light)">Microsoft Copilot / Work IQ</strong>, and
+    <strong style="color:var(--fabric-light)">Microsoft Fabric / Fabric IQ</strong>.
+  </p>
+</div>
+
+<!-- ── FILTER ── -->
+<div class="legend-bar">
+  <span class="legend-label">Filter:</span>
+  <button class="pill pill-all active" onclick="filter('all', this)">All Domains</button>
+  <button class="pill pill-erp"  onclick="filter('erp', this)">ERP · Finance</button>
+  <button class="pill pill-hcm"  onclick="filter('hcm', this)">HCM · HR</button>
+  <button class="pill pill-scm"  onclick="filter('scm', this)">SCM · Mfg</button>
+  <button class="pill pill-sales" onclick="filter('sales', this)">Sales · CRM</button>
+  <button class="pill pill-service" onclick="filter('service', this)">Service</button>
+  <button class="pill pill-mktg" onclick="filter('mktg', this)">Marketing</button>
+  <button class="pill pill-health" onclick="filter('health', this)">Healthcare</button>
+</div>
+
+<!-- ── STACK LEGEND ── -->
+<div class="stack-legend">
+  <div class="stack-item"><div class="stack-dot dot-foundry"></div><span><strong style="color:#a882dd">Azure AI Foundry</strong> — Custom agent build, orchestration, RAG, LLM selection (equiv. to Oracle AI Agent Studio)</span></div>
+  <div class="stack-item"><div class="stack-dot dot-copilot"></div><span><strong style="color:#21a55c">Copilot / Work IQ</strong> — M365 Copilot, Copilot for Sales/Service/HR, Viva suite, Teams/Outlook embedded intelligence</span></div>
+  <div class="stack-item"><div class="stack-dot dot-fabric"></div><span><strong style="color:#26c6b8">Fabric / Fabric IQ</strong> — OneLake data unification, Copilot in Fabric, Power BI, Real-Time Intelligence, Data Agent</span></div>
+</div>
+
+<!-- ════════════════════════════════════ ERP ════════════════════════════════════ -->
+<div class="domain-block" data-domain="erp">
+  <div class="domain-header erp">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Enterprise Resource Planning (ERP) · Finance & Risk</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>E-Business Suite (EBIS) · JD Edwards (JDE) · PeopleSoft Financials</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build invoice-processing, GL-monitoring, and cash-management agents in Foundry using <strong>Azure Document Intelligence</strong> (invoice OCR), <strong>GPT-4o function-calling</strong> against EBIS/JDE REST APIs or Azure SQL replicas, and <strong>Prompt Flow</strong> for deterministic approval routing. Policy compliance checks can use RAG over SharePoint-hosted policy documents — mirroring Oracle's Payables and Expense agents exactly.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p><strong>Excel Copilot</strong> accelerates FP&A variance analysis and what-if simulations against exported ERP data. <strong>Copilot in Teams</strong> routes AP exception notifications and approvals. <strong>Copilot in Outlook</strong> surfaces supplier payment terms and early-pay recommendations. <strong>BizChat</strong> lets finance staff query GL balances or policy docs in natural language — mirroring the Ledger Agent and Expense Policy Agent.</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p><strong>OneLake shortcuts</strong> consolidate EBIS/JDE/PeopleSoft financial data without ETL. <strong>Copilot in Fabric</strong> generates DAX/SQL from natural language for GL and AP analytics. <strong>Fabric Real-Time Intelligence</strong> enables continuous financial monitoring equivalent to Oracle's Ledger Agent. <strong>Power BI + AI Insights</strong> surfaces anomaly detection across journal entries and cash positions — matching Oracle's Planning and PCM agents.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup>
+    <col/><col/><col/><col/><col/><col/><col/>
+  </colgroup>
+  <thead><tr>
+    <th>Functional Area</th>
+    <th>Oracle Fusion Agent</th>
+    <th>Business Benefit</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Payables Agent</td>
+    <td class="benefit-col">Automates multichannel invoice ingestion, PO matching, tax/fraud checks, approval routing</td>
+    <td>
+      <span class="app-tag tag-ebis">EBIS AP</span>
+      <span class="app-tag tag-jde">JDE AP</span>
+      <span class="app-tag tag-ps">PeopleSoft AP</span>
+      <span class="app-tag tag-azure">Azure IaaS/PaaS</span>
+    </td>
+    <td class="col-foundry">Build invoice agent with <strong>Azure Document Intelligence</strong> + GPT-4o. Foundry Prompt Flow handles PO-match logic, fraud rules, and routing to EBIS/JDE via API or DB connector.</td>
+    <td class="col-copilot"><strong>Copilot for Finance</strong> surfaces AP exceptions in Teams. Outlook Copilot drafts supplier payment communications.</td>
+    <td class="col-fabric"><strong>Fabric Data Factory</strong> pipelines from EBIS AP → OneLake. Copilot in Fabric enables NL queries on aging payables. Power BI auto-detects duplicate invoices.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Ledger Agent</td>
+    <td class="benefit-col">Continuous GL monitoring, NL inquiry with context-aware explanations, auto-create adjustment journals</td>
+    <td>
+      <span class="app-tag tag-ebis">EBIS GL</span>
+      <span class="app-tag tag-jde">JDE GL</span>
+      <span class="app-tag tag-ps">PeopleSoft GL</span>
+    </td>
+    <td class="col-foundry">Foundry agent with <strong>Azure OpenAI</strong> function-calling into GL APIs. RAG over period-close documents. Natural-language journal creation writes back to EBIS/JDE via exposed APIs.</td>
+    <td class="col-copilot"><strong>Excel Copilot</strong> analyzes trial balance exports. <strong>BizChat</strong> answers GL variance questions. Teams Copilot summarizes close-status digest for controllers.</td>
+    <td class="col-fabric"><strong>Fabric Real-Time Intelligence</strong> monitors GL postings with alert rules. <strong>Copilot in Fabric</strong> generates period-over-period variance narrative automatically.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Planning Agent</td>
+    <td class="benefit-col">Real-time trend/variance analysis, event-driven predictions, what-if simulations</td>
+    <td>
+      <span class="app-tag tag-ebis">EBIS FPM</span>
+      <span class="app-tag tag-jde">JDE OneView</span>
+      <span class="app-tag tag-ps">PS Financials</span>
+    </td>
+    <td class="col-foundry">Foundry agent orchestrates <strong>Azure ML</strong> forecasting models + GPT-4o for NL scenario narration. What-if parameters feed back to ERP planning modules via API.</td>
+    <td class="col-copilot"><strong>Excel Copilot</strong> drives scenario modeling within familiar FP&A worksheets. <strong>Copilot in Teams</strong> generates forecast-vs-actual narrative for leadership meetings.</td>
+    <td class="col-fabric"><strong>Fabric Copilot + Power BI</strong> delivers continuous planning dashboards with AI-generated commentary. OneLake unifies actuals + budget data across EBIS and JDE.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Payments Agent</td>
+    <td class="benefit-col">Optimize cash outflows, early-pay programs, virtual cards, supplier onboarding</td>
+    <td>
+      <span class="app-tag tag-ebis">EBIS Payments</span>
+      <span class="app-tag tag-jde">JDE AP Payments</span>
+      <span class="app-tag tag-ps">PS AP</span>
+    </td>
+    <td class="col-foundry">Foundry agent evaluates dynamic discounting offers and virtual card eligibility using GPT-4o reasoning over AP aging + cash position data exposed from EBIS/JDE.</td>
+    <td class="col-copilot">Teams Copilot surfaces daily payment run recommendations. <strong>Copilot for Finance</strong> integrates with bank portals for ACH/wire approval workflows.</td>
+    <td class="col-fabric">Fabric consolidates bank feed + AP data; Copilot in Power BI auto-narrates working capital metrics and DPO trends.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Expense Policy Agent</td>
+    <td class="benefit-col">Contextual answers on T&E policy before expense submission; flags compliance issues</td>
+    <td>
+      <span class="app-tag tag-ps">PeopleSoft Expenses</span>
+      <span class="app-tag tag-ebis">EBIS iExpenses</span>
+    </td>
+    <td class="col-foundry">Foundry RAG agent over SharePoint-hosted T&E policies; function-calling validates amounts against policy limits in real time before submission to EBIS/PS Expenses.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> answers "can I expense X?" questions inline. <strong>Copilot for Finance</strong> flags out-of-policy line items during expense report drafting.</td>
+    <td class="col-fabric">Fabric aggregates expense data; Copilot in Power BI surfaces policy exception rates by department for finance governance.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Profitability & Cost Management Agent</td>
+    <td class="benefit-col">Conversational interface to build, modify, calculate, and analyze cost/profitability models</td>
+    <td>
+      <span class="app-tag tag-ebis">EBIS Cost Mgmt</span>
+      <span class="app-tag tag-jde">JDE Adv. Cost Acctg</span>
+    </td>
+    <td class="col-foundry">Foundry agent with GPT-4o reasoning over activity-based cost models stored in Azure SQL. Supports NL queries to drill into cost drivers and auto-generate allocation adjustments.</td>
+    <td class="col-copilot"><strong>Excel Copilot</strong> supports cost-model simulations; <strong>BizChat</strong> synthesizes margin analysis from multiple ERP cost reports.</td>
+    <td class="col-fabric"><strong>Power BI Copilot</strong> auto-generates profitability narratives. Fabric unifies cost data across JDE and EBIS for a single model view.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Finance</td>
+    <td class="agent-name">Receipt Capture & Matching (Touchless Expenses)</td>
+    <td class="benefit-col">Automated receipt-to-credit-card matching; minimizes manual expense input</td>
+    <td>
+      <span class="app-tag tag-ps">PeopleSoft Expenses</span>
+      <span class="app-tag tag-ebis">EBIS iExpenses</span>
+    </td>
+    <td class="col-foundry"><strong>Azure Document Intelligence</strong> extracts receipt data; Foundry agent matches against corporate card feeds and creates EBIS/PS expense line items automatically.</td>
+    <td class="col-copilot"><strong>Copilot in Teams/Outlook</strong> triggers expense creation from forwarded receipt emails. M365 Copilot mobile captures receipts on-the-go.</td>
+    <td class="col-fabric">Fabric ingests card transaction feeds + receipt OCR output; Copilot in Fabric flags unmatched charges for auditors in real time.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Risk Management</td>
+    <td class="agent-name">Access Request Assistant</td>
+    <td class="benefit-col">Self-service role access requests; SoD analysis post-submission; workflow initiation</td>
+    <td>
+      <span class="app-tag tag-ebis">EBIS GRC</span>
+      <span class="app-tag tag-jde">JDE Security/UDO</span>
+      <span class="app-tag tag-ps">PeopleSoft Security</span>
+    </td>
+    <td class="col-foundry">Foundry agent integrated with <strong>Microsoft Entra ID</strong> for role request intake; GPT-4o resolves role names from NL; SoD checks via Azure API calls to GRC rules engine.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> enables "request access to X" conversationally. <strong>Entra ID Governance</strong> access reviews surface in Teams approval cards.</td>
+    <td class="col-fabric">Fabric logs access request data for audit; Copilot in Power BI provides SoD violation dashboards for compliance teams.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ HCM ════════════════════════════════════ -->
+<div class="domain-block" data-domain="hcm">
+  <div class="domain-header hcm">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Human Capital Management (HCM) · HR · Payroll · Talent</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>PeopleSoft HCM · Oracle E-Business Suite HRMS</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build recruiting, talent, and HR policy agents in Foundry using <strong>RAG over SharePoint/HR policy libraries</strong>, GPT-4o reasoning over PeopleSoft/EBIS HR data exposed via REST or Azure SQL. Foundry's multi-agent orchestration replicates Oracle's Concierge routing model — an Employee Concierge agent dispatching to specialized sub-agents for payroll, leave, talent, and benefits questions.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p>Microsoft's <strong>Viva suite</strong> is the native Work IQ layer for HCM: <strong>Viva Insights</strong> (workforce analytics), <strong>Viva Learning</strong> (training recommendations), <strong>Viva Goals</strong> (OKR management), <strong>Viva Engage</strong> (employee experience). <strong>Copilot for HR scenarios</strong> embedded in Teams handles onboarding guides, benefits Q&A, leave requests, and payroll clarifications — directly mirroring Oracle's 50+ HCM agents.</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p><strong>Fabric unifies PeopleSoft/EBIS HR data</strong> in OneLake — headcount, payroll runs, performance ratings, learning completion — for workforce analytics. <strong>Copilot in Power BI</strong> generates succession planning narratives, attrition risk reports, and equity analysis. <strong>Fabric Real-Time Intelligence</strong> can monitor payroll anomalies equivalent to Oracle's Payroll Run Analyst agent.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+  <thead><tr>
+    <th>Functional Area</th><th>Oracle Fusion Agent</th><th>Business Benefit</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Career Coach</td>
+    <td class="benefit-col">Best-fit role recommendations; interview prep; career summary generation</td>
+    <td><span class="app-tag tag-ps">PS Talent Acquisition</span><span class="app-tag tag-ebis">EBIS iRecruitment</span></td>
+    <td class="col-foundry">Foundry RAG agent over job catalogue + competency frameworks from PeopleSoft. GPT-4o generates tailored career summaries and interview tips.</td>
+    <td class="col-copilot"><strong>Viva Learning</strong> recommends skill-building paths. <strong>Copilot in Teams</strong> coaches candidates through mock interview Q&A.</td>
+    <td class="col-fabric">Fabric analyzes skills-gap data from PeopleSoft; Power BI Copilot surfaces best-fit role matches at population scale.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Employee Hiring Advisor</td>
+    <td class="benefit-col">Hiring manager insights and candidate recommendations to streamline recruitment</td>
+    <td><span class="app-tag tag-ps">PS TA</span><span class="app-tag tag-ebis">EBIS iRecruitment</span></td>
+    <td class="col-foundry">Foundry agent reads applicant ATS data from PeopleSoft TA; GPT-4o generates ranked shortlists with reasoning. Integrates with LinkedIn via Azure Logic Apps.</td>
+    <td class="col-copilot"><strong>Copilot for HR</strong> in Teams provides hiring manager interview briefs. M365 Copilot drafts offer letters from templates.</td>
+    <td class="col-fabric">Fabric aggregates sourcing pipeline data; Copilot in Power BI reports time-to-fill and source-of-hire metrics.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Interview Management Assistant</td>
+    <td class="benefit-col">Automates interview scheduling, calendar invites, conflict resolution, reminders</td>
+    <td><span class="app-tag tag-ps">PeopleSoft TA</span><span class="app-tag tag-ebis">EBIS iRecruitment</span></td>
+    <td class="col-foundry">Foundry agent with <strong>Microsoft Graph API</strong> integration for calendar scheduling; resolves conflicts and sends Teams meeting links automatically.</td>
+    <td class="col-copilot"><strong>Copilot in Outlook</strong> handles scheduling natively. <strong>Copilot in Teams</strong> auto-generates interview confirmation messages and reminders.</td>
+    <td class="col-fabric">Fabric tracks interview pipeline velocity; Copilot in Power BI shows scheduling bottlenecks by recruiter or role.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Job Applicant Screening Advisor</td>
+    <td class="benefit-col">Real-time, context-specific responses about individual applicants to recruiters</td>
+    <td><span class="app-tag tag-ps">PS TA</span><span class="app-tag tag-ebis">EBIS iRecruitment</span></td>
+    <td class="col-foundry">Foundry agent reads structured applicant data from PeopleSoft TA; GPT-4o synthesizes qualifications against JD criteria. Bias-mitigated prompting enforced at system level.</td>
+    <td class="col-copilot"><strong>Copilot for HR</strong> surfaces applicant summaries within Teams. Copilot in Outlook assists with candidate communication drafts.</td>
+    <td class="col-fabric">Fabric tracks funnel conversion by screening stage; Power BI Copilot generates diversity and inclusion pipeline reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Job Offer Analyst</td>
+    <td class="benefit-col">Compensation policy Q&A; offer creation support</td>
+    <td><span class="app-tag tag-ps">PS Compensation</span><span class="app-tag tag-ebis">EBIS Compensation</span></td>
+    <td class="col-foundry">Foundry RAG agent over comp bands and offer policy docs from SharePoint; function-calling creates offer records in PeopleSoft Compensation module.</td>
+    <td class="col-copilot"><strong>Copilot in Word</strong> drafts offer letters. <strong>Copilot for HR</strong> in Teams answers recruiter comp-band questions in real time.</td>
+    <td class="col-fabric">Fabric benchmarks offer values against market data; Power BI Copilot surfaces offer acceptance rates and comp competitiveness trends.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Compensation Guidelines Analyst</td>
+    <td class="benefit-col">Market trend insights and policy guidance on compensation for new hires and current employees</td>
+    <td><span class="app-tag tag-ps">PS Compensation</span><span class="app-tag tag-ebis">EBIS Compensation</span></td>
+    <td class="col-foundry">Foundry agent with RAG over comp policy + external market data (connected via Azure API Management). GPT-4o synthesizes pay equity and market positioning.</td>
+    <td class="col-copilot"><strong>Copilot for HR</strong> answers manager pay questions in Teams. Excel Copilot analyzes comp survey data exports.</td>
+    <td class="col-fabric">Fabric unifies internal PS comp data + external benchmarks; Power BI Copilot generates equity audit narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Recruiting</td><td class="agent-name">Job Requisition Analyst</td>
+    <td class="benefit-col">Supports hiring managers creating requisitions with field-specific guidance</td>
+    <td><span class="app-tag tag-ps">PS TA</span><span class="app-tag tag-ebis">EBIS iRecruitment</span></td>
+    <td class="col-foundry">Foundry agent provides NL guidance on requisition fields; auto-populates PeopleSoft TA requisition forms via API based on manager inputs.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> guides managers through requisition creation conversationally. Copilot in Word drafts JD content.</td>
+    <td class="col-fabric">Fabric tracks open-req metrics; Copilot in Power BI flags aging requisitions for recruiter action.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Skills & Career</td><td class="agent-name">Career Planning Guide</td>
+    <td class="benefit-col">Goal setting, career roadmap, skill development guidance</td>
+    <td><span class="app-tag tag-ps">PS Learning Mgmt</span><span class="app-tag tag-ebis">EBIS Learning</span></td>
+    <td class="col-foundry">Foundry agent reads employee profile from PeopleSoft; GPT-4o generates personalized career roadmap with role progression paths and skill gap analysis.</td>
+    <td class="col-copilot"><strong>Viva Learning</strong> delivers personalized course recommendations. <strong>Viva Goals</strong> tracks career milestone OKRs. <strong>Copilot in Teams</strong> coaches on next steps.</td>
+    <td class="col-fabric">Fabric aggregates skills inventory; Copilot in Power BI surfaces org-wide skill gap heat maps for L&D planning.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Skills & Career</td><td class="agent-name">Internal Mobility: Job Discovery & Fit Advisor</td>
+    <td class="benefit-col">Match employees to internal roles based on experience; assess fit; recommend skills</td>
+    <td><span class="app-tag tag-ps">PS Talent Mgmt</span><span class="app-tag tag-ebis">EBIS Performance</span></td>
+    <td class="col-foundry">Foundry agent with vector embeddings of employee profiles and job descriptions for semantic matching. Returns fit scores with skill-gap explanations; links to Viva Learning.</td>
+    <td class="col-copilot"><strong>Viva Insights</strong> flags mobility candidates. <strong>Copilot in Teams</strong> presents matched open roles to employees conversationally.</td>
+    <td class="col-fabric">Fabric tracks internal mobility metrics (fill rates, flight risk reduction); Power BI Copilot generates mobility program ROI reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Skills & Career</td><td class="agent-name">Learning Tutor & Learning Advisor</td>
+    <td class="benefit-col">Answers questions about training materials; recommends development opportunities</td>
+    <td><span class="app-tag tag-ps">PS Learning Mgmt</span><span class="app-tag tag-ebis">EBIS Learning</span></td>
+    <td class="col-foundry">Foundry RAG agent over learning content corpus (LMS + SharePoint). GPT-4o acts as interactive tutor with concept explanations and quiz generation.</td>
+    <td class="col-copilot"><strong>Viva Learning</strong> is the native Microsoft equivalent — deeply integrated with Teams and M365 content. Copilot in Teams answers learning Q&A in the flow of work.</td>
+    <td class="col-fabric">Fabric tracks learning completion and skill attainment; Power BI Copilot links L&D investment to performance outcomes.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Talent Mgmt</td><td class="agent-name">Performance & Goals Assistant</td>
+    <td class="benefit-col">Goal setting, feedback support, development plan recommendations</td>
+    <td><span class="app-tag tag-ps">PS Performance Mgmt</span><span class="app-tag tag-ebis">EBIS Performance</span></td>
+    <td class="col-foundry">Foundry agent reads PeopleSoft performance data; GPT-4o generates feedback summaries and development suggestions. Writeback to PS via APIs for goal creation.</td>
+    <td class="col-copilot"><strong>Viva Goals</strong> tracks OKRs. <strong>Copilot in Word</strong> drafts performance reviews. <strong>Copilot in Teams</strong> summarizes 1:1 meeting action items automatically.</td>
+    <td class="col-fabric">Fabric aggregates performance ratings + business outcomes; Power BI Copilot generates manager effectiveness and team performance narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Talent Mgmt</td><td class="agent-name">Succession Planning Advisor</td>
+    <td class="benefit-col">Succession needs, pipeline health, risk simulation, plan automation</td>
+    <td><span class="app-tag tag-ps">PS Succession Planning</span><span class="app-tag tag-ebis">EBIS Talent</span></td>
+    <td class="col-foundry">Foundry multi-agent: one agent reads talent pool data from PeopleSoft, another runs risk simulations (departure scenarios), GPT-4o orchestrates succession recommendations.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> surfaces succession gap alerts for HR leaders. Copilot in PowerPoint drafts talent review presentation decks.</td>
+    <td class="col-fabric">Fabric models bench strength using PeopleSoft HR + performance data; Power BI Copilot generates succession readiness dashboards.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Talent Mgmt</td><td class="agent-name">Talent Advisor & Review Assistant</td>
+    <td class="benefit-col">Guides talent reviews; gathers and summarizes performance data for managers</td>
+    <td><span class="app-tag tag-ps">PS Talent Mgmt</span><span class="app-tag tag-ebis">EBIS Performance</span></td>
+    <td class="col-foundry">Foundry agent reads PeopleSoft performance, compensation, and engagement data; GPT-4o produces 9-box placement recommendations with rationale for manager review.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> facilitates calibration sessions with AI-generated summaries. Copilot in Word drafts talent review narratives from structured data.</td>
+    <td class="col-fabric">Fabric consolidates multi-source talent data for calibration; Power BI Copilot auto-generates talent distribution heat maps by org unit.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Talent Mgmt</td><td class="agent-name">Team Goals & Team Sync Advisor</td>
+    <td class="benefit-col">Goal alignment, automated nudges, weekly team update digests</td>
+    <td><span class="app-tag tag-ps">PeopleSoft HCM</span><span class="app-tag tag-ebis">EBIS HRMS</span></td>
+    <td class="col-foundry">Foundry agent collects team updates via Teams bot; GPT-4o generates manager digest with risks, blockers, and follow-ups. Integrates with Planner/DevOps for task status.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> meeting recap is the native equivalent — auto-summarizes meetings, extracts action items. <strong>Viva Goals</strong> for team OKR tracking.</td>
+    <td class="col-fabric">Fabric tracks goal attainment rates over time; Power BI Copilot generates cross-team progress narratives for leadership.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">HR & Workforce</td><td class="agent-name">Benefits Plan & Policy Advisor</td>
+    <td class="benefit-col">Benefits package explanation, personalized medical/dental/vision insights, eligibility guidance</td>
+    <td><span class="app-tag tag-ps">PS Benefits Admin</span><span class="app-tag tag-ebis">EBIS Benefits</span></td>
+    <td class="col-foundry">Foundry RAG agent over benefits plan documents from SharePoint; GPT-4o personalizes responses using employee profile data from PeopleSoft. Eligibility rules enforced via API.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> answers open-enrollment benefits questions 24/7. <strong>Viva Engage</strong> distributes benefits awareness content intelligently.</td>
+    <td class="col-fabric">Fabric tracks benefits enrollment and utilization data; Power BI Copilot reports on plan cost and participation for HR decision-making.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">HR & Workforce</td><td class="agent-name">Payroll Run Analyst</td>
+    <td class="benefit-col">Explains payroll anomalies; highlights key influencing factors; root cause analysis</td>
+    <td><span class="app-tag tag-ps">PeopleSoft Payroll</span><span class="app-tag tag-ebis">EBIS Payroll</span></td>
+    <td class="col-foundry">Foundry agent reads PeopleSoft payroll run results; GPT-4o detects anomalies, explains variances (new hires, tax changes, etc.), and recommends corrections via function calls.</td>
+    <td class="col-copilot"><strong>Copilot for Finance</strong> in Teams notifies payroll admins of anomalies. Copilot in Excel allows NL drill-down into payroll variance data exports.</td>
+    <td class="col-fabric"><strong>Fabric Real-Time Intelligence</strong> monitors payroll run outputs; Copilot in Power BI auto-generates payroll variance narrative for each period close.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">HR & Workforce</td><td class="agent-name">Leave & Absence Analyst/Advisor</td>
+    <td class="benefit-col">Policy navigation, leave requests, rights and entitlements explained</td>
+    <td><span class="app-tag tag-ps">PS Absence Mgmt</span><span class="app-tag tag-ebis">EBIS Absence</span></td>
+    <td class="col-foundry">Foundry RAG agent over leave policies; function-calling submits leave requests to PeopleSoft Absence Management on employee behalf with correct leave type selection.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> handles "how much PTO do I have?" and "request leave" conversationally. <strong>Viva Insights</strong> monitors leave patterns for wellbeing signals.</td>
+    <td class="col-fabric">Fabric tracks absence patterns and trends; Power BI Copilot surfaces absenteeism analytics and compliance with statutory leave obligations.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">HR & Workforce</td><td class="agent-name">Payslip Analyst & Compensation Advisor</td>
+    <td class="benefit-col">Clarifies payslip details; explains salary breakdown, deductions, and stock/bonus components</td>
+    <td><span class="app-tag tag-ps">PS Payroll</span><span class="app-tag tag-ebis">EBIS Payroll/Comp</span></td>
+    <td class="col-foundry">Foundry agent reads employee payslip data from PeopleSoft securely; GPT-4o explains line items in plain language, flags changes from prior period.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> handles payslip Q&A. <strong>Copilot for HR</strong> can summarize total comp statements for employees.</td>
+    <td class="col-fabric">Fabric aggregates compensation across pay elements; Copilot in Power BI generates total rewards dashboards for HR and employees.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">HR & Workforce</td><td class="agent-name">Shift Scheduling & Time Entry Assistants</td>
+    <td class="benefit-col">Optimal shift creation; automated timecard processing from uploaded timesheets</td>
+    <td><span class="app-tag tag-ps">PS Time & Labor</span><span class="app-tag tag-ebis">EBIS Time & Labor</span></td>
+    <td class="col-foundry">Foundry agent optimizes shift schedules using Azure ML constraint solver; Document Intelligence extracts timecard data from uploaded PDFs; writes to PeopleSoft T&L via API.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> handles shift swap requests and time-off approvals. <strong>Microsoft Teams Shifts</strong> app provides native scheduling intelligence.</td>
+    <td class="col-fabric">Fabric tracks overtime, scheduling compliance, and labor cost trends; Power BI Copilot generates workforce utilization reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">HR & Workforce</td><td class="agent-name">Employment Lifecycle Policy Analyst</td>
+    <td class="benefit-col">Step-by-step hiring, onboarding, development, offboarding policy guidance for managers</td>
+    <td><span class="app-tag tag-ps">PeopleSoft HCM</span><span class="app-tag tag-ebis">EBIS HRMS</span></td>
+    <td class="col-foundry">Foundry RAG agent over HR policy library in SharePoint; GPT-4o guides managers through lifecycle events with checklists, triggering PeopleSoft workflows via API at each stage.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> delivers contextual policy nudges to managers during lifecycle events. <strong>Viva Engage</strong> communicates policy updates.</td>
+    <td class="col-fabric">Fabric tracks policy adoption and lifecycle compliance; Copilot in Power BI identifies stages with the most manager friction.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Employee Experience</td><td class="agent-name">Employee & Manager Concierge</td>
+    <td class="benefit-col">Triage and route employee/manager inquiries to the right specialist agent</td>
+    <td><span class="app-tag tag-ps">PeopleSoft HCM</span><span class="app-tag tag-ebis">EBIS HRMS</span></td>
+    <td class="col-foundry">Foundry <strong>multi-agent orchestration</strong>: a routing agent classifies intent and dispatches to specialized sub-agents (payroll, leave, talent, benefits). Replaces Oracle's Concierge architecture precisely.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> functions as an HR concierge bot. <strong>Azure AI Bot Service</strong> + Copilot Studio builds no-code HR bots integrated with PeopleSoft.</td>
+    <td class="col-fabric">Fabric tracks inquiry volumes and resolution rates; Power BI Copilot identifies top-ask topics driving HR shared services demand.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Employee Experience</td><td class="agent-name">Onboarding Assistant</td>
+    <td class="benefit-col">Guides new employees through policies, culture, resources, and first-day tasks</td>
+    <td><span class="app-tag tag-ps">PS Onboarding</span><span class="app-tag tag-ebis">EBIS HRMS</span></td>
+    <td class="col-foundry">Foundry agent orchestrates onboarding checklist — provisioning accounts (Entra ID), assigning Viva Learning modules, answering policy questions, and updating PeopleSoft onboarding status.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> delivers a native onboarding experience. <strong>Viva Learning</strong> assigns mandatory training. <strong>Viva Connections</strong> serves the employee intranet.</td>
+    <td class="col-fabric">Fabric tracks time-to-productivity for new hires; Power BI Copilot correlates onboarding completeness with 90-day retention.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SCM ════════════════════════════════════ -->
+<div class="domain-block" data-domain="scm">
+  <div class="domain-header scm">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Supply Chain Management (SCM) · Manufacturing · Procurement</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>JD Edwards (JDE) · Oracle E-Business Suite ASCP/Manufacturing/Procurement</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build procurement, inventory, manufacturing, and supply planning agents in Foundry using <strong>Azure OpenAI + RAG</strong> over operational procedure manuals, regulatory compliance docs, and SCM policy libraries stored in SharePoint or Blob Storage. <strong>Foundry multi-agent orchestration</strong> handles cross-domain supply chain disruption response — analyzing shortage impact, sourcing alternatives, and creating JDE/EBIS purchase orders autonomously.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p><strong>Copilot for Supply Chain</strong> embedded in Teams enables buyers to manage procurement exceptions, approve POs, and communicate with suppliers without leaving M365. <strong>Copilot in Outlook</strong> processes supplier quote emails into structured data. <strong>Copilot in Teams</strong> delivers supply disruption briefings. <strong>Microsoft Teams Approvals</strong> automates multi-step procurement authorization workflows natively.</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p><strong>Fabric Real-Time Intelligence</strong> connects IoT sensor feeds, WMS systems, and JDE/EBIS SCM data in OneLake for live supply chain visibility. <strong>Copilot in Fabric</strong> generates demand forecasts and inventory optimization recommendations from natural-language prompts. <strong>Power BI Copilot</strong> auto-narrates supply chain performance vs. KPIs — equivalent to Oracle's SCM planning and disruption agents.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+  <thead><tr>
+    <th>Functional Area</th><th>Oracle Fusion Agent</th><th>Business Benefit</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Inventory</td><td class="agent-name">Item Shortages Analysis Advisor</td>
+    <td class="benefit-col">Identifies inventory stockouts and shortages across organizations</td>
+    <td><span class="app-tag tag-jde">JDE Inventory</span><span class="app-tag tag-ebis">EBIS Inventory</span></td>
+    <td class="col-foundry">Foundry agent queries JDE/EBIS inventory APIs; GPT-4o identifies shortage patterns and recommends replenishment actions or alternate suppliers automatically.</td>
+    <td class="col-copilot"><strong>Copilot in Teams</strong> delivers daily shortage briefing to supply chain managers. Copilot in Outlook drafts supplier emergency order communications.</td>
+    <td class="col-fabric"><strong>Fabric Real-Time Intelligence</strong> monitors stock levels against safety stock; Copilot in Power BI auto-generates shortage risk reports by SKU and location.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Inventory</td><td class="agent-name">Material Expiration Analysis</td>
+    <td class="benefit-col">Identifies lots nearing expiration; analyzes demand/usage; recommends actions</td>
+    <td><span class="app-tag tag-jde">JDE Inventory/Mfg</span><span class="app-tag tag-ebis">EBIS WMS</span></td>
+    <td class="col-foundry">Foundry agent reads lot/batch data from JDE; GPT-4o cross-references demand schedule and recommends expedite, rework, or disposal actions with cost impact estimates.</td>
+    <td class="col-copilot">Teams Copilot delivers expiry alerts to warehouse managers. Copilot in Outlook auto-drafts disposal approval requests.</td>
+    <td class="col-fabric">Fabric tracks lot aging across all locations; Power BI Copilot generates FEFO compliance dashboards and write-off risk narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Inventory</td><td class="agent-name">Fulfillment Processing Assistant</td>
+    <td class="benefit-col">Executes picking, packing, and shipping fulfillment steps</td>
+    <td><span class="app-tag tag-jde">JDE Distribution</span><span class="app-tag tag-ebis">EBIS Order Mgmt</span></td>
+    <td class="col-foundry">Foundry agent orchestrates pick/pack/ship workflow via JDE/EBIS APIs; integrates with <strong>Azure IoT</strong> for warehouse scanner data; generates shipping labels via Document Intelligence.</td>
+    <td class="col-copilot">Teams Copilot provides warehouse staff with fulfillment task queues and exception alerts in natural language.</td>
+    <td class="col-fabric">Fabric tracks fulfillment cycle time and OTIF metrics; Power BI Copilot auto-generates carrier performance and fulfillment accuracy reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Manufacturing</td><td class="agent-name">Maintenance Work Order Builder</td>
+    <td class="benefit-col">Creates/updates work orders, adds operations, issues materials, captures resources</td>
+    <td><span class="app-tag tag-jde">JDE Plant Maintenance</span><span class="app-tag tag-ebis">EBIS EAM</span></td>
+    <td class="col-foundry">Foundry agent takes technician voice/text input; GPT-4o structures work order fields and creates records in JDE Plant Maintenance via API. Azure IoT feeds equipment sensor data to trigger PMs.</td>
+    <td class="col-copilot">Teams Copilot allows technicians to dictate work order updates hands-free on mobile. Copilot in Outlook summarizes pending maintenance for plant managers.</td>
+    <td class="col-fabric">Fabric ingests maintenance history + IoT telemetry; Power BI Copilot generates predictive maintenance risk scores and MTBF analytics.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Manufacturing</td><td class="agent-name">Maintenance Advisor & Operational Procedure Advisor</td>
+    <td class="benefit-col">Consistent repair guidance from multiple sources; access to operating procedures</td>
+    <td><span class="app-tag tag-jde">JDE Mfg/Maintenance</span><span class="app-tag tag-ebis">EBIS Manufacturing</span></td>
+    <td class="col-foundry">Foundry RAG agent over maintenance manuals, SOPs, and OEM documentation in SharePoint/Blob. GPT-4o answers technician questions with step-by-step procedures and safety warnings.</td>
+    <td class="col-copilot">Teams Copilot serves as an on-device maintenance knowledge assistant. <strong>Copilot in Field Service</strong> (Dynamics 365) provides deep integration for technician workflows.</td>
+    <td class="col-fabric">Fabric tracks procedure adherence and incident rates; Copilot in Power BI surfaces quality non-conformance patterns linked to procedure gaps.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Manufacturing</td><td class="agent-name">Disposition Assistant for Rejects</td>
+    <td class="benefit-col">Assesses production rejections; automates rework process based on SOPs</td>
+    <td><span class="app-tag tag-jde">JDE Manufacturing</span><span class="app-tag tag-ebis">EBIS Quality</span></td>
+    <td class="col-foundry">Foundry agent reads inspection results and defect codes from JDE QC; GPT-4o applies disposition rules from SOPs; auto-creates rework work orders or MRB requests via JDE APIs.</td>
+    <td class="col-copilot">Teams Copilot notifies QA engineers of rejection batches with AI-generated disposition recommendations.</td>
+    <td class="col-fabric">Fabric tracks defect rates and rework costs by product line; Power BI Copilot generates First-Pass Yield and Cost-of-Quality narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Procurement</td><td class="agent-name">Quote to Purchase Requisition Assistant</td>
+    <td class="benefit-col">Ingests supplier quotes (email/chat); creates requisitions automatically</td>
+    <td><span class="app-tag tag-jde">JDE Procurement</span><span class="app-tag tag-ebis">EBIS iProcurement</span><span class="app-tag tag-ps">PS eProcurement</span></td>
+    <td class="col-foundry"><strong>Azure Document Intelligence</strong> extracts line items from email quotes; Foundry agent creates JDE/EBIS requisitions via API with structured data. Multi-quote comparison handled by GPT-4o.</td>
+    <td class="col-copilot"><strong>Copilot in Outlook</strong> detects supplier quote emails and prompts buyer to create a requisition. Teams Copilot manages multi-vendor quote threads.</td>
+    <td class="col-fabric">Fabric tracks quote-to-PO conversion rates and vendor responsiveness; Power BI Copilot generates sourcing cycle time dashboards.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Procurement</td><td class="agent-name">Procurement Policy Advisor</td>
+    <td class="benefit-col">Real-time Q&A on procurement policies; accelerates PO creation with compliance checks</td>
+    <td><span class="app-tag tag-jde">JDE Procurement</span><span class="app-tag tag-ebis">EBIS iProcurement</span></td>
+    <td class="col-foundry">Foundry RAG agent over procurement policy library; GPT-4o answers buyer questions and validates PO against spend thresholds, preferred supplier lists, and approval limits before submission.</td>
+    <td class="col-copilot">Teams Copilot answers procurement policy questions in-channel. <strong>Microsoft Teams Approvals</strong> enforces PO approval workflows natively without leaving M365.</td>
+    <td class="col-fabric">Fabric tracks policy exception rates and maverick spend; Power BI Copilot generates procurement compliance scorecards by category and buyer.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Procurement</td><td class="agent-name">Purchase Requisition Status Advisor</td>
+    <td class="benefit-col">Identifies requisitions requiring action; surfaces bottlenecks</td>
+    <td><span class="app-tag tag-jde">JDE Procurement</span><span class="app-tag tag-ebis">EBIS iProcurement</span></td>
+    <td class="col-foundry">Foundry agent queries JDE/EBIS PR status in real time; GPT-4o identifies stalled approvals and generates context-aware follow-up messages to approvers.</td>
+    <td class="col-copilot">Teams Copilot proactively pings approvers for pending requisitions. Teams Approvals shows PR queue with AI-generated summaries for faster decision-making.</td>
+    <td class="col-fabric">Fabric tracks PR aging and approval cycle time by department; Power BI Copilot auto-generates procurement velocity reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Order Mgmt</td><td class="agent-name">Sales Order Assistant</td>
+    <td class="benefit-col">Creates sales orders from natural language inputs by order entry specialists or customers</td>
+    <td><span class="app-tag tag-jde">JDE Order Mgmt</span><span class="app-tag tag-ebis">EBIS Order Mgmt</span></td>
+    <td class="col-foundry">Foundry agent accepts NL order specifications; GPT-4o parses SKUs, quantities, delivery dates, and pricing; creates JDE/EBIS order via API with validation and exception flagging.</td>
+    <td class="col-copilot">Teams Copilot allows CSRs to enter orders conversationally. Copilot in Outlook converts customer PO email into structured order entry fields.</td>
+    <td class="col-fabric">Fabric tracks order-to-cash cycle times; Power BI Copilot generates order backlog and revenue recognition narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Order Mgmt</td><td class="agent-name">Return Order Assistant</td>
+    <td class="benefit-col">Checks return eligibility; provides return options; auto-creates RMA with email confirmation</td>
+    <td><span class="app-tag tag-jde">JDE Sales/Distribution</span><span class="app-tag tag-ebis">EBIS Order Mgmt</span></td>
+    <td class="col-foundry">Foundry agent queries JDE/EBIS for order history and return policies; GPT-4o presents customer options; auto-creates RMA record and sends confirmation email via Azure Communication Services.</td>
+    <td class="col-copilot">Teams/Outlook Copilot handles customer return requests. <strong>Copilot for Service</strong> integrates return workflows with case management.</td>
+    <td class="col-fabric">Fabric tracks return rates by product and reason code; Power BI Copilot generates reverse logistics cost and quality narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">PLM</td><td class="agent-name">Product Regulatory & Compliance Advisor</td>
+    <td class="benefit-col">Retrieves critical regulatory and compliance policy information for products</td>
+    <td><span class="app-tag tag-jde">JDE PDM</span><span class="app-tag tag-ebis">EBIS PDH</span></td>
+    <td class="col-foundry">Foundry RAG agent over regulatory documents (RoHS, REACH, FDA, CE) in SharePoint/Blob; GPT-4o cross-references product materials against compliance requirements and flags gaps.</td>
+    <td class="col-copilot">Teams Copilot answers product compliance questions for engineering and procurement teams in real time.</td>
+    <td class="col-fabric">Fabric tracks product compliance status across the portfolio; Power BI Copilot generates regulatory risk dashboards by product category and region.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">PLM</td><td class="agent-name">Component Replacement Assistant</td>
+    <td class="benefit-col">Identifies and proposes bulk component changes with impact analysis and compliance checks</td>
+    <td><span class="app-tag tag-jde">JDE PDM/BOM</span><span class="app-tag tag-ebis">EBIS PDH/BOM</span></td>
+    <td class="col-foundry">Foundry multi-agent: BOM analysis agent identifies affected assemblies; compliance agent checks substitutes against regulatory rules; change order agent creates ECOs in JDE/EBIS via API.</td>
+    <td class="col-copilot">Teams Copilot notifies engineering teams of component change impacts. Copilot in Word drafts ECO documentation.</td>
+    <td class="col-fabric">Fabric models BOM explosion and impact analysis across JDE/EBIS data; Power BI Copilot generates component risk and obsolescence dashboards.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Supply Planning</td><td class="agent-name">Supply Disruptions Mitigator</td>
+    <td class="benefit-col">Surfaces real-time supply risks; assesses criticality; suggests alternative supplies/routing</td>
+    <td><span class="app-tag tag-jde">JDE Requirements Planning</span><span class="app-tag tag-ebis">EBIS ASCP</span></td>
+    <td class="col-foundry">Foundry multi-agent with external news/risk feeds via <strong>Azure API Management</strong>; one agent scores disruption severity; another identifies alternate suppliers from JDE Approved Supplier List; third auto-creates emergency POs.</td>
+    <td class="col-copilot">Teams Copilot delivers supply risk briefings with recommended actions. Copilot in Outlook drafts supplier escalation communications.</td>
+    <td class="col-fabric"><strong>Fabric Real-Time Intelligence</strong> monitors supply lead times and risk signals; Power BI Copilot auto-generates supply chain resilience scorecards.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Supply Planning</td><td class="agent-name">Planning Advisor for Exceptions & Notes</td>
+    <td class="benefit-col">Analyzes and summarizes planning exceptions and planner notes</td>
+    <td><span class="app-tag tag-jde">JDE Requirements Planning</span><span class="app-tag tag-ebis">EBIS ASCP/MRP</span></td>
+    <td class="col-foundry">Foundry agent reads planning run exception logs from EBIS/JDE; GPT-4o prioritizes exceptions by business impact and generates action summaries for planners in the form of daily digests.</td>
+    <td class="col-copilot">Teams Copilot delivers planning exception digests each morning. Copilot in Outlook drafts planner-to-buyer follow-up messages for critical exceptions.</td>
+    <td class="col-fabric">Fabric ingests EBIS ASCP/JDE planning data; Power BI Copilot generates plan adherence and exception resolution rate dashboards.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Supplier Mgmt</td><td class="agent-name">Manufacturer Onboarding & Risk Assessment Advisor</td>
+    <td class="benefit-col">Validates manufacturers against risk profile during onboarding; quality standards checks</td>
+    <td><span class="app-tag tag-jde">JDE Supplier Self-Service</span><span class="app-tag tag-ebis">EBIS Supplier Mgmt</span></td>
+    <td class="col-foundry">Foundry agent orchestrates supplier onboarding: D&B/Dun credit check via Azure API, ISO certification validation via Document Intelligence, auto-scores risk and creates JDE/EBIS supplier record with approval workflow.</td>
+    <td class="col-copilot">Teams Copilot guides sourcing teams through onboarding checklists. Copilot in Outlook manages supplier document request communications.</td>
+    <td class="col-fabric">Fabric consolidates supplier risk data across JDE/EBIS and third-party sources; Power BI Copilot generates supplier risk heat maps and portfolio concentration dashboards.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Sustainability</td><td class="agent-name">Sustainability Policy Advisor</td>
+    <td class="benefit-col">References sustainability policies, goals, and strategies via NL processing</td>
+    <td><span class="app-tag tag-jde">JDE ERP</span><span class="app-tag tag-ebis">EBIS ERP</span></td>
+    <td class="col-foundry">Foundry RAG agent over sustainability policy library and ESG reporting frameworks (GRI, TCFD, CSRD); GPT-4o answers employee and supplier questions and maps activities to ESG commitments.</td>
+    <td class="col-copilot">Teams Copilot delivers sustainability Q&A. <strong>Microsoft Cloud for Sustainability</strong> is the native Microsoft ESG data and reporting platform.</td>
+    <td class="col-fabric"><strong>Microsoft Fabric + Cloud for Sustainability</strong> unifies carbon, water, waste, and supply chain emissions data; Power BI Copilot auto-generates ESG disclosure narratives.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SALES ════════════════════════════════════ -->
+<div class="domain-block" data-domain="sales">
+  <div class="domain-header sales">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Sales · CRM · Account Intelligence · Forecasting</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>Siebel CRM (Sales, Forecasting, Incentive Comp) · EBIS Order Mgmt</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build Siebel-connected sales intelligence agents in Foundry using <strong>GPT-4o function-calling against Siebel CRM APIs</strong> or Azure SQL mirrors. Account research agents use RAG over financial filings, news feeds (via Bing Search API), and CRM history to generate the same account insight narrative as Oracle's Account Advisor. Incentive comp plan agents use RAG over plan documents to answer seller queries.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p><strong>Microsoft Copilot for Sales</strong> is the direct, feature-equivalent product: embedded in Outlook and Teams, it surfaces Siebel CRM data, generates meeting summaries, drafts follow-up emails, and provides opportunity coaching — all without leaving M365. <strong>Copilot for Sales</strong> + <strong>Microsoft Sales Copilot</strong> cover every Oracle Fusion Sales agent scenario and often exceed them with native Teams/Outlook depth.</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p><strong>Fabric ingests Siebel CRM data</strong> into OneLake for unified sales analytics. <strong>Power BI Copilot</strong> auto-generates pipeline, forecast, and revenue narratives replacing Oracle's Express Reports agent. <strong>Fabric Copilot</strong> enables sellers to query pipeline health in natural language. Incentive compensation analytics connect Siebel plan data with Fabric for real-time earnings visibility.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+  <thead><tr>
+    <th>Functional Area</th><th>Oracle Fusion Agent</th><th>Business Benefit</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Account Intelligence</td><td class="agent-name">Account Advisor</td>
+    <td class="benefit-col">Summarizes account data, contacts, subscriptions, invoices, and financial disclosures</td>
+    <td><span class="app-tag tag-siebel">Siebel Sales</span><span class="app-tag tag-ebis">EBIS Order Mgmt</span></td>
+    <td class="col-foundry">Foundry agent reads Siebel account data + EBIS AR; RAG over attached analyst reports and 10-K filings via <strong>Bing Search API</strong>; GPT-4o generates account briefing document.</td>
+    <td class="col-copilot"><strong>Copilot for Sales</strong> natively surfaces account summaries in Outlook/Teams. Pre-meeting briefings auto-generated from Siebel CRM + web research.</td>
+    <td class="col-fabric">Fabric unifies Siebel + EBIS AR + web data; Power BI Copilot generates account health scorecards and at-risk account narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Account Intelligence</td><td class="agent-name">Account Engagement Guide</td>
+    <td class="benefit-col">Automates account research; surfaces insights for stakeholder engagement and revenue growth</td>
+    <td><span class="app-tag tag-siebel">Siebel Sales</span></td>
+    <td class="col-foundry">Foundry agent with Bing Search + LinkedIn data enrichment via Azure Logic Apps; GPT-4o generates stakeholder engagement plans with next-best-action recommendations tied to Siebel opportunity stage.</td>
+    <td class="col-copilot"><strong>Copilot for Sales</strong> generates pre-call research briefs automatically in Outlook. <strong>Teams Copilot</strong> captures meeting highlights and creates follow-up actions in Siebel via plugin.</td>
+    <td class="col-fabric">Fabric tracks engagement frequency vs. deal velocity; Power BI Copilot generates territory-level account penetration reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Forecasting</td><td class="agent-name">Incentive Payee Advisor</td>
+    <td class="benefit-col">Real-time answers on incentive comp plans and policy changes for sellers</td>
+    <td><span class="app-tag tag-siebel">Siebel Incentive Comp</span><span class="app-tag tag-ebis">EBIS Incentive Comp</span></td>
+    <td class="col-foundry">Foundry RAG agent over incentive plan documents in SharePoint; function-calling queries Siebel ICS for real-time earnings estimates; GPT-4o explains quota attainment and payout calculations.</td>
+    <td class="col-copilot"><strong>Copilot for Sales</strong> in Teams answers "what will I earn on this deal?" in real time. Copilot in Outlook surfaces comp plan update notifications with plain-language summaries.</td>
+    <td class="col-fabric">Fabric ingests Siebel comp data; Power BI Copilot generates seller earnings dashboards and plan-vs-actual attainment reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Forecasting</td><td class="agent-name">Incentive Compensation Plan Advisor</td>
+    <td class="benefit-col">Explains complex pay structures; helps reps understand earnings potential</td>
+    <td><span class="app-tag tag-siebel">Siebel ICS</span></td>
+    <td class="col-foundry">Foundry RAG agent over full comp plan documentation; GPT-4o generates personalized Q&A on spiffs, accelerators, clawbacks, and territory overlaps for each seller's specific plan.</td>
+    <td class="col-copilot"><strong>Copilot for Sales</strong> delivers contextual comp guidance in Teams/Outlook. Teams bots built with Copilot Studio handle comp FAQ workflows at scale.</td>
+    <td class="col-fabric">Power BI Copilot models compensation scenarios; Fabric dashboards track team earnings trajectory vs. quota across Siebel plans.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Sales Productivity</td><td class="agent-name">Lead Advisor Agent</td>
+    <td class="benefit-col">Highlights missed interactions; summarizes lead behavior; recommends next-best actions</td>
+    <td><span class="app-tag tag-siebel">Siebel Sales/Leads</span></td>
+    <td class="col-foundry">Foundry agent analyzes Siebel lead activity + email/meeting data from Microsoft Graph; GPT-4o generates next-best-action recommendations with engagement timeline summaries.</td>
+    <td class="col-copilot"><strong>Copilot for Sales</strong> surfaces lead intelligence in Outlook and Teams natively — this is the direct Microsoft equivalent. AI-generated lead scoring and follow-up drafts.</td>
+    <td class="col-fabric">Fabric tracks lead-to-opportunity conversion rates; Power BI Copilot generates lead quality and pipeline velocity narratives by source and seller.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Sales Productivity</td><td class="agent-name">Opportunity-to-Quote Guide</td>
+    <td class="benefit-col">Speeds quoting with AI insights, automated document generation, account overviews</td>
+    <td><span class="app-tag tag-siebel">Siebel Sales/Quotes</span><span class="app-tag tag-jde">JDE Sales Quoting</span></td>
+    <td class="col-foundry">Foundry agent reads Siebel opportunity data + pricing catalog; GPT-4o generates CPQ-style quote recommendations; Document Intelligence auto-populates Word/PDF quote templates via Azure Communication Services.</td>
+    <td class="col-copilot"><strong>Copilot for Sales</strong> generates quote summaries in Outlook. <strong>Copilot in Word</strong> drafts proposal documents from opportunity data. <strong>Dynamics 365 CPQ</strong> for full quote automation.</td>
+    <td class="col-fabric">Fabric tracks quote-to-close rates and discount patterns; Power BI Copilot auto-generates win/loss analysis narratives by segment and product.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Sales Productivity</td><td class="agent-name">Express Reports Agent</td>
+    <td class="benefit-col">Ready-to-use visual + tabular reports from simple prompts (e.g., "closed opps by stage for Q2")</td>
+    <td><span class="app-tag tag-siebel">Siebel Analytics</span></td>
+    <td class="col-foundry">Foundry agent with NL-to-SQL capability queries Siebel data replicated in Azure SQL Synapse; GPT-4o generates chart + narrative response for sales manager in Teams chat.</td>
+    <td class="col-copilot"><strong>Power BI Q&A + Copilot</strong> is the direct equivalent — answers "show me Q2 closed deals by stage" with auto-generated visuals in Teams.</td>
+    <td class="col-fabric"><strong>Fabric Copilot</strong> enables NL queries over Siebel/EBIS sales data in OneLake. Power BI Copilot auto-generates sales narrative reports on demand.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SERVICE ════════════════════════════════════ -->
+<div class="domain-block" data-domain="service">
+  <div class="domain-header service">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Customer Service · Knowledge Management · Case Management</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>Siebel Service · Oracle E-Business Suite Service · Oracle Field Service</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build Siebel Service-connected agents in Foundry using <strong>Azure AI Search</strong> as the knowledge retrieval layer over KB articles, case history, and product manuals. <strong>GPT-4o function-calling</strong> creates and updates Siebel service requests. <strong>Foundry multi-agent</strong> orchestrates self-service resolution, escalation, and work-order dispatch — mirroring Oracle's Service agent suite precisely.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p><strong>Microsoft Copilot for Service</strong> is the direct equivalent: embedded in Teams and Outlook, it surfaces Siebel case data, generates resolution recommendations from KB content, and drafts customer responses. <strong>Copilot Studio</strong> builds no-code self-service bots that integrate with Siebel Service via Power Platform connectors. <strong>Azure Communication Services</strong> delivers omnichannel interaction (chat, email, voice).</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p>Fabric ingests Siebel service case data into OneLake for unified service analytics. <strong>Power BI Copilot</strong> auto-generates CSAT, AHT, FCR, and SLA compliance narratives. <strong>Copilot in Fabric</strong> enables service managers to query "what are our top 5 case categories this week?" in natural language — replacing Oracle's Knowledge Search and SR analytics agents.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+  <thead><tr>
+    <th>Functional Area</th><th>Oracle Fusion Agent</th><th>Business Benefit</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Knowledge Mgmt</td><td class="agent-name">Knowledge Authoring Assistant</td>
+    <td class="benefit-col">Auto-generates high-quality KB articles from service data; ensures consistency</td>
+    <td><span class="app-tag tag-siebel">Siebel Service</span><span class="app-tag tag-ebis">EBIS Service</span></td>
+    <td class="col-foundry">Foundry agent reads resolved Siebel cases; GPT-4o generates structured KB articles following content templates. Auto-submits for human review via Azure Logic Apps approval workflow.</td>
+    <td class="col-copilot"><strong>Copilot for Service</strong> drafts KB articles from case resolution notes in Teams. <strong>Copilot in Word</strong> generates structured articles from voice transcripts of resolution calls.</td>
+    <td class="col-fabric">Fabric tracks KB article coverage vs. case volume; Power BI Copilot identifies knowledge gaps causing repeat case escalations.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Knowledge Mgmt</td><td class="agent-name">Knowledge Search Assistant</td>
+    <td class="benefit-col">Contextually relevant answers with citations from KB content for service teams</td>
+    <td><span class="app-tag tag-siebel">Siebel Service KB</span><span class="app-tag tag-ebis">EBIS Service</span></td>
+    <td class="col-foundry"><strong>Azure AI Search + GPT-4o</strong> provides semantic KB search with citation-backed answers. Foundry agent indexes Siebel KB articles and product documentation for agent-assist retrieval.</td>
+    <td class="col-copilot"><strong>Copilot for Service</strong> surfaces KB recommendations alongside Siebel cases in Teams/Outlook. Agent-assist mode suggests next best answer in real time during customer interactions.</td>
+    <td class="col-fabric">Fabric tracks KB deflection rates and article effectiveness; Power BI Copilot generates search-to-resolution correlation reports.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">SR Management</td><td class="agent-name">Self-Service Chat Agent</td>
+    <td class="benefit-col">Resolves common inquiries (troubleshooting, order tracking, returns) without human intervention</td>
+    <td><span class="app-tag tag-siebel">Siebel eService</span><span class="app-tag tag-ebis">EBIS Service</span></td>
+    <td class="col-foundry">Foundry agent with <strong>Azure AI Bot Service</strong> integration; GPT-4o handles multi-turn conversations; function-calling queries Siebel/EBIS for order status, creates SRs, and processes returns autonomously.</td>
+    <td class="col-copilot"><strong>Copilot Studio</strong> builds no-code self-service bots with Siebel connectors. <strong>Azure Communication Services</strong> delivers chat across web, Teams, and WhatsApp channels.</td>
+    <td class="col-fabric">Fabric tracks deflection rates and bot CSAT vs. agent CSAT; Power BI Copilot measures containment rate improvements over time.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">SR Management</td><td class="agent-name">Service Request Resolution Agent</td>
+    <td class="benefit-col">AI-driven resolution recommendations and KB articles; reduces agent workload</td>
+    <td><span class="app-tag tag-siebel">Siebel Service</span><span class="app-tag tag-ebis">EBIS Service</span></td>
+    <td class="col-foundry">Foundry agent reads Siebel SR detail; Azure AI Search retrieves similar resolved cases; GPT-4o generates resolution recommendation with confidence score. Agent-assist panel in Siebel UI via Foundry extension.</td>
+    <td class="col-copilot"><strong>Copilot for Service</strong> in Teams and Siebel side-panel suggests resolution paths with KB citations. Outlook Copilot drafts customer resolution responses.</td>
+    <td class="col-fabric">Fabric tracks AHT and FCR by resolution method; Power BI Copilot auto-generates agent productivity and resolution quality narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">SR Management</td><td class="agent-name">Work Order Agent</td>
+    <td class="benefit-col">Auto-drafts work orders with prefilled attributes from similar SRs; tracks lifecycle</td>
+    <td><span class="app-tag tag-siebel">Siebel Field Service</span><span class="app-tag tag-ebis">EBIS Field Service</span></td>
+    <td class="col-foundry">Foundry agent reads Siebel SR; retrieves similar resolved SRs with work orders via AI Search; GPT-4o pre-populates work order attributes for dispatcher review; creates WO in Siebel via API on approval.</td>
+    <td class="col-copilot"><strong>Copilot for Field Service</strong> (Dynamics 365) is the native Microsoft equivalent with rich work-order intelligence. <strong>Teams Copilot</strong> alerts field service coordinators of new work order drafts.</td>
+    <td class="col-fabric">Fabric tracks WO completion rates, SLA adherence, and field technician utilization; Power BI Copilot generates field service operational narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">SR Management</td><td class="agent-name">Notification Agent</td>
+    <td class="benefit-col">Sends email/notification when SR requires owner attention</td>
+    <td><span class="app-tag tag-siebel">Siebel Workflow</span><span class="app-tag tag-ebis">EBIS Workflow</span></td>
+    <td class="col-foundry">Foundry agent monitors Siebel SR queue via webhook/polling; GPT-4o generates context-aware notification text; Azure Communication Services delivers email + Teams adaptive card notifications.</td>
+    <td class="col-copilot"><strong>Power Automate + Teams</strong> delivers SR notification workflows natively. <strong>Copilot in Teams</strong> generates intelligent SR digests for service managers.</td>
+    <td class="col-fabric">Fabric tracks notification response times; Power BI Copilot monitors SLA breach risk proactively.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ MARKETING ════════════════════════════════════ -->
+<div class="domain-block" data-domain="mktg">
+  <div class="domain-header mktg">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Marketing · Campaign Intelligence · Content</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>Siebel Marketing · Oracle E-Business Suite Marketing</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build Siebel Marketing-connected campaign optimization agents in Foundry using <strong>Azure ML propensity models</strong> and <strong>GPT-4o for NL campaign strategy generation</strong>. Foundry agents can analyze Siebel campaign response data, identify next-best-offers, and generate personalized content variants at scale — matching Oracle's Campaign Optimization and Planning agents.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p><strong>Copilot in Word, PowerPoint, and Teams</strong> accelerates campaign content creation — drafting briefs, generating copy variants, and building campaign decks from a prompt. <strong>Microsoft Designer + Copilot</strong> generates campaign visuals. <strong>Copilot in Teams</strong> facilitates campaign planning sprints with AI-generated meeting summaries and action items — mirroring Oracle's Campaign Planning and Content Creation agents.</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p>Fabric unifies Siebel Marketing campaign data, web analytics, and customer engagement signals in OneLake. <strong>Power BI Copilot</strong> auto-generates campaign performance narratives (CTR, conversion, ROI) replacing Oracle's Campaign Optimization analytics. <strong>Fabric + Azure ML</strong> builds look-alike models and propensity scores equivalent to Oracle's Campaign Planning Agent predictions.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+  <thead><tr>
+    <th>Functional Area</th><th>Oracle Fusion Agent</th><th>Business Benefit</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Campaign Optimization</td><td class="agent-name">Campaign Optimization Agent</td>
+    <td class="benefit-col">Next-best action, optimized timing/messaging, personalized recommendations for engagement</td>
+    <td><span class="app-tag tag-siebel">Siebel Marketing</span><span class="app-tag tag-ebis">EBIS Marketing</span></td>
+    <td class="col-foundry">Foundry agent reads Siebel campaign engagement data; <strong>Azure ML</strong> runs send-time optimization and message personalization models; GPT-4o generates next-best-action recommendations per segment.</td>
+    <td class="col-copilot"><strong>Microsoft Viva Amplify</strong> for employee communications. <strong>Copilot in Teams</strong> helps marketers refine messaging. <strong>Dynamics 365 Marketing Copilot</strong> for full campaign intelligence.</td>
+    <td class="col-fabric">Fabric consolidates campaign engagement signals from Siebel + web + email; Power BI Copilot generates personalization effectiveness and engagement uplift narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Campaign Optimization</td><td class="agent-name">Campaign Planning Agent</td>
+    <td class="benefit-col">AI-driven propensity models, look-alike modeling, predict behavior, optimize targeting, maximize ROI</td>
+    <td><span class="app-tag tag-siebel">Siebel Marketing</span></td>
+    <td class="col-foundry"><strong>Azure ML</strong> builds propensity and look-alike models on Siebel customer data. Foundry orchestrates data prep → model scoring → GPT-4o campaign brief generation in an end-to-end pipeline.</td>
+    <td class="col-copilot"><strong>Copilot in PowerPoint/Word</strong> generates campaign strategy decks from audience insights. <strong>Dynamics 365 Customer Insights + Copilot</strong> is the full-stack Microsoft equivalent.</td>
+    <td class="col-fabric">Fabric ingests Siebel customer data for segmentation and scoring; <strong>Customer Insights built on Fabric</strong> delivers propensity and look-alike modeling with Copilot-generated audience summaries.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Content Creation</td><td class="agent-name">Campaign Content Creation Assistant</td>
+    <td class="benefit-col">Generative AI for engaging, on-brand content across channels; accelerates time-to-market</td>
+    <td><span class="app-tag tag-siebel">Siebel Marketing</span><span class="app-tag tag-ebis">EBIS Marketing</span></td>
+    <td class="col-foundry">Foundry agent with brand style-guide RAG generates on-brand email, social, and ad copy variants. <strong>Azure AI Content Safety</strong> screens all outputs before delivery to Siebel campaign templates.</td>
+    <td class="col-copilot"><strong>Copilot in Word and Teams</strong> generates campaign copy. <strong>Microsoft Designer</strong> creates visual assets. <strong>Copilot Studio</strong> builds a content review workflow with human-in-the-loop approvals.</td>
+    <td class="col-fabric">Fabric tracks content performance by channel; Power BI Copilot generates content effectiveness and A/B test narrative reports for creative optimization.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ HEALTHCARE ════════════════════════════════════ -->
+<div class="domain-block" data-domain="health">
+  <div class="domain-header health">
+    <div class="domain-badge">Domain</div>
+    <div class="domain-title">Healthcare · Clinical Workflows · Patient Engagement</div>
+    <div class="domain-1p-apps">Oracle 1P on Azure: <strong>Oracle Health (Cerner) · Oracle Health Revenue Cycle</strong></div>
+  </div>
+
+  <div class="narrative-strip">
+    <div class="narrative-cell n-foundry">
+      <div class="nc-label">Azure AI Foundry</div>
+      <p>Build Cerner-connected clinical agents in Foundry using <strong>Azure Health Data Services (FHIR/DICOM)</strong> as the data layer, GPT-4o for clinical NL understanding, and <strong>Azure AI Health Insights</strong> for pre-built clinical intelligence (radiology insights, trial matching, cancer profiling). Foundry agents can automate clinical documentation, prior authorization, and care gap identification against Cerner patient data — the clinical equivalent of Oracle's ERP and HCM agentic suite.</p>
+    </div>
+    <div class="narrative-cell n-copilot">
+      <div class="nc-label">Copilot / Work IQ</div>
+      <p><strong>Microsoft Dragon Copilot</strong> (formerly Dragon Ambient eXperience) is the premier clinical documentation agent — AI-powered ambient listening for Cerner workflows that generates structured clinical notes automatically. <strong>Copilot in Teams</strong> supports care coordination, scheduling huddles, and patient communication drafting. <strong>Microsoft Cloud for Healthcare + Copilot</strong> delivers patient engagement, care management, and administrative intelligence as a Cerner-compatible platform layer.</p>
+    </div>
+    <div class="narrative-cell n-fabric">
+      <div class="nc-label">Fabric / Fabric IQ</div>
+      <p><strong>Microsoft Fabric + Azure Health Data Services</strong> unifies Cerner clinical, operational, and financial data in OneLake with HIPAA/HITRUST compliance baked in. <strong>Power BI Copilot</strong> auto-generates population health, readmission risk, and revenue cycle performance narratives. <strong>Fabric Real-Time Intelligence</strong> monitors clinical alerts, bed capacity, and operational KPIs — giving Cerner customers a cloud-native analytics intelligence layer equivalent to Oracle Health Analytics.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+  <table>
+  <colgroup><col/><col/><col/><col/><col/><col/><col/></colgroup>
+  <thead><tr>
+    <th>Workflow Category</th><th>Equivalent Oracle Fusion Agent Analog</th><th>Clinical Use Case</th>
+    <th>Oracle 1P On-Prem Equivalent</th>
+    <th class="th-foundry">Azure AI Foundry</th>
+    <th class="th-copilot">Copilot / Work IQ</th>
+    <th class="th-fabric">Fabric / Fabric IQ</th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td class="fa-col">Clinical Documentation</td><td class="agent-name">↔ Payroll Run Analyst (Operations analogy)</td>
+    <td class="benefit-col">Auto-generate structured clinical notes (SOAP, H&P, discharge summaries) from ambient conversations during patient encounters</td>
+    <td><span class="app-tag tag-cerner">Oracle Health (Cerner)</span><span class="app-tag tag-azure">FHIR on Azure</span></td>
+    <td class="col-foundry">Foundry agent with <strong>Azure AI Speech</strong> for ambient transcription; GPT-4o generates SOAP notes with ICD-10/SNOMED coding suggestions; writes back to Cerner via FHIR API R4.</td>
+    <td class="col-copilot"><strong>Microsoft Dragon Copilot</strong> — the industry-leading ambient clinical documentation AI — integrates natively with Cerner workflows. Reduces documentation burden by 50%+ in clinical trials.</td>
+    <td class="col-fabric">Fabric tracks documentation completion rates, coder query rates, and CDI accuracy; Power BI Copilot generates HIM productivity narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Revenue Cycle</td><td class="agent-name">↔ Payables Agent (Finance analogy)</td>
+    <td class="benefit-col">Automates prior authorization, claims submission, denial management, and remittance posting for Cerner Revenue Cycle</td>
+    <td><span class="app-tag tag-cerner">Oracle Health RC</span><span class="app-tag tag-azure">Azure IaaS</span></td>
+    <td class="col-foundry">Foundry agent reads Cerner RC data via FHIR; <strong>Azure Document Intelligence</strong> processes EOBs and remittances; GPT-4o generates denial appeal letters; function-calling resubmits corrected claims.</td>
+    <td class="col-copilot"><strong>Microsoft Cloud for Healthcare + Copilot</strong> assists RCM teams with prior auth and claim status workflows. Copilot in Teams delivers daily denial management briefings.</td>
+    <td class="col-fabric">Fabric consolidates Cerner claims + payer data; Power BI Copilot auto-generates AR aging, denial rate, and days-in-AR narratives for CFO reporting.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Care Coordination</td><td class="agent-name">↔ Supply Disruptions Mitigator (Operations analogy)</td>
+    <td class="benefit-col">Identifies care gaps, high-risk patients, and readmission risks; coordinates care team actions</td>
+    <td><span class="app-tag tag-cerner">Oracle Health</span><span class="app-tag tag-azure">Azure Health DS</span></td>
+    <td class="col-foundry"><strong>Azure AI Health Insights</strong> (Patient Timeline, Trial Matcher) + Foundry agent reads Cerner FHIR data; GPT-4o generates care gap summaries and outreach recommendations for care managers.</td>
+    <td class="col-copilot"><strong>Microsoft Cloud for Healthcare — Care Management</strong> provides Copilot-powered care coordination. Teams Copilot facilitates multidisciplinary team huddles with AI-generated patient summaries.</td>
+    <td class="col-fabric">Fabric enables population health analytics on Cerner data; Power BI Copilot generates readmission risk, HEDIS measure, and cost-of-care narratives for value-based care programs.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Patient Engagement</td><td class="agent-name">↔ Self-Service Chat Agent (Service analogy)</td>
+    <td class="benefit-col">Patient-facing AI for appointment scheduling, care plan Q&A, medication reminders, and post-discharge follow-up</td>
+    <td><span class="app-tag tag-cerner">Oracle Health Patient Portal</span></td>
+    <td class="col-foundry">Foundry agent with Cerner FHIR integration for appointment queries; GPT-4o handles multi-turn patient conversations with clinical safety guardrails; Azure Communication Services delivers SMS/email/chat outreach.</td>
+    <td class="col-copilot"><strong>Microsoft Cloud for Healthcare — Patient Engagement</strong> provides Copilot Studio-powered patient bots with Cerner EHR integration via FHIR connectors.</td>
+    <td class="col-fabric">Fabric tracks patient portal adoption, appointment no-show rates, and engagement effectiveness; Power BI Copilot generates patient access and satisfaction narratives.</td>
+  </tr>
+  <tr>
+    <td class="fa-col">Workforce Operations</td><td class="agent-name">↔ Shift Scheduling Assistant (HCM analogy)</td>
+    <td class="benefit-col">Optimizes clinical staff scheduling, float pool management, and overtime reduction across Cerner workforce management</td>
+    <td><span class="app-tag tag-cerner">Oracle Health WFM</span><span class="app-tag tag-ps">PeopleSoft HCM</span></td>
+    <td class="col-foundry">Foundry agent reads census data + staff credentials from Cerner; Azure ML optimizer generates compliant shift schedules; writes approved schedules back to Cerner/PeopleSoft Time &amp; Labor via API.</td>
+    <td class="col-copilot"><strong>Microsoft Teams Shifts</strong> provides native clinical scheduling intelligence. <strong>Viva Insights</strong> monitors care team wellbeing and burnout signals across Cerner workforce data.</td>
+    <td class="col-fabric">Fabric integrates Cerner census + staffing data; Power BI Copilot generates nurse-to-patient ratio compliance, overtime cost, and agency usage narratives for CNO reporting.</td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ── SUMMARY ── -->
+<div class="summary">
+  <h2>Microsoft AI Stack Summary: Matching Oracle Fusion Agent Parity on Azure</h2>
+  <div class="summary-grid">
+    <div class="summary-card s-foundry">
+      <h3>Azure AI Foundry → Oracle AI Agent Studio</h3>
+      <ul>
+        <li>Direct equivalent to Oracle AI Agent Studio for building, testing, and deploying custom agents</li>
+        <li>RAG pipelines over SharePoint/Blob policy libraries replace Oracle Knowledge Stores</li>
+        <li>Multi-agent orchestration (Semantic Kernel / AutoGen) replicates Oracle's Concierge routing pattern</li>
+        <li>Prompt Flow enables deterministic, governance-grade agentic workflows with full auditability</li>
+        <li>Azure Document Intelligence provides invoice OCR, receipt capture, form extraction for ERP agents</li>
+        <li>Azure OpenAI (GPT-4o, o3) + Phi-3-mini for cost-optimized agents across ERP/HCM/SCM/CRM workflows</li>
+        <li>Function-calling against EBIS, JDE, PeopleSoft, Siebel, and Cerner REST APIs for writeback actions</li>
+        <li>Azure AI Search provides semantic KB retrieval equivalent to Oracle's Service Knowledge agents</li>
+        <li>Foundry Agent Marketplace emerging — equivalent to Oracle AI Agent Marketplace for partner agents</li>
+      </ul>
+    </div>
+    <div class="summary-card s-copilot">
+      <h3>Copilot / Work IQ → Oracle Embedded UX Agents</h3>
+      <ul>
+        <li>Copilot for Sales = direct replacement for all Oracle Fusion Sales agent scenarios in Teams/Outlook</li>
+        <li>Copilot for Service = direct replacement for Oracle Fusion Service agents with Siebel connector</li>
+        <li>Copilot for Finance = GL, AP, and expense agent equivalent embedded in Excel and Teams</li>
+        <li>Viva Learning = Learning Tutor and Learning Advisor agent equivalent, natively in M365</li>
+        <li>Viva Goals = Team Goals and Performance Goals agent equivalent with OKR framework</li>
+        <li>Viva Insights = workforce wellbeing analytics equivalent to Oracle HR workforce analytics agents</li>
+        <li>Dragon Copilot = clinical documentation agent for Oracle Health/Cerner deployments</li>
+        <li>Copilot Studio (no-code) = Oracle AI Agent Studio equivalent for business user agent building</li>
+        <li>Microsoft Teams Shifts = native scheduling agent equivalent to Oracle Shift Scheduling Assistant</li>
+      </ul>
+    </div>
+    <div class="summary-card s-fabric">
+      <h3>Fabric / Fabric IQ → Oracle Analytics & Data Intelligence</h3>
+      <ul>
+        <li>OneLake shortcuts unify EBIS, JDE, PeopleSoft, Siebel, Cerner data without ETL migrations</li>
+        <li>Fabric Real-Time Intelligence = continuous monitoring equivalent to Oracle's Ledger and Payroll Run agents</li>
+        <li>Power BI Copilot = Express Reports Agent equivalent — NL-to-visual reports from ERP data in seconds</li>
+        <li>Copilot in Fabric = NL queries over supply chain, HR, and financial data equivalent to Oracle planning agents</li>
+        <li>Azure ML within Fabric = propensity, look-alike, and forecasting models for Sales and SCM agents</li>
+        <li>Fabric + Azure Health Data Services = HIPAA-compliant population health intelligence for Cerner customers</li>
+        <li>Microsoft Cloud for Sustainability on Fabric = ESG/sustainability agent equivalent for EBIS/JDE customers</li>
+        <li>Customer Insights on Fabric = Oracle Marketing Agent equivalent for Siebel customer data activation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Compiled March 2026 · Source: Oracle Fusion AI Agents catalog (oracle.com/applications/fusion-ai/ai-agents) · Microsoft Azure AI Foundry, Copilot, and Fabric product documentation · Strategic analysis for Azure-resident Oracle 1P application customers
+</div>
+
+<script>
+function filter(domain, btn) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.domain-block').forEach(block => {
+    if (domain === 'all' || block.dataset.domain === domain) {
+      block.classList.remove('hidden');
+    } else {
+      block.classList.add('hidden');
+    }
+  });
+}
+</script>
+</body>
 </html>
